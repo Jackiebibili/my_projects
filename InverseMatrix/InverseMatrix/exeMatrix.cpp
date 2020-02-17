@@ -3,8 +3,10 @@
 #include<cmath>
 #include<iomanip>
 #include<string>
-
 using namespace std;
+
+int tm = 0; //efficiency of the program
+int ta = 0;
 
 void eliminationAbovePivot(int auguCols, double** matrix_A, int cycle);
 int eliminationMatrix_A(int rows, int cols, int auguCols, double** matrix_A, double* pivot, double* tempRow, int cycle);
@@ -27,6 +29,40 @@ int main()
 		//initialization needed
 	}
 
+	//normal matrix A nxn
+	double** matrix = nullptr;
+	matrix = new double* [rows];
+	for (i = 0; i < rows; i++)
+	{
+		matrix[i] = new double[cols];
+		//initialization needed
+	}
+
+	double** vB = nullptr;
+	vB = new double* [cols];
+	double** vX = nullptr;
+	vX = new double* [cols];
+	for (i = 0; i < rows; i++)
+	{
+		vB[i] = new double[cols];
+		//initialization needed
+	}
+	for (i = 0; i < rows; i++)
+	{
+		vX[i] = new double[cols];
+		//initialization needed
+	}
+
+	for (i = 0; i < cols; i++)
+	{
+		vB[i][0] = 0.0;
+	}
+	for (i = 0; i < cols; i++)
+	{
+		vX[i][0] = 0.0; //must be 0.0
+	}
+
+
 	cout << "Enter the matrix A by entering each row at a time\n";
 	cout << "separate each row's input by an newline\n";
 	for (i = 0; i < rows; i++)
@@ -40,6 +76,26 @@ int main()
 			cout << "--------\n";
 		}
 	}
+	cout << endl << endl;
+
+
+	//Enter for the vector b: Ax = b
+	//display vector b
+	cout << "Enter the vector b each at a time, separate by a space\n";
+	for (i = 0; i < cols; i++)
+	{
+		cin >> vB[i][0];
+	}
+	cout << "--------\n";
+	cout << endl;
+	cout << "Vector b:\n";
+	for (i = 0; i < cols; i++)
+	{
+		cout << setw(7) << vB[i][0] << endl;
+	}
+	cout << endl;
+
+
 
 	//1. Augumented matrix formed
 	//populate with [A I]
@@ -82,22 +138,8 @@ int main()
 	constantMulti(auguCols, matrix_A, rows, pivot);
 
 
-	cout << fixed << showpoint << setprecision(2);
+	//display the inverse A
 	cout << "The inverse A is: \n";
-
-	/*
-	for (i = 0; i < rows; i++)
-	{
-		for (j = 0; j < auguCols; j++)
-		{
-			cout << setw(7) << matrix_A[i][j] << " ";
-		}
-		if (i != rows - 1)
-		{
-			cout << "\n-------------------------\n";
-		}
-	}
-*/
 	cout << fixed << showpoint << setprecision(3);
 	for (i = 0; i < rows; i++)
 	{
@@ -115,6 +157,46 @@ int main()
 			cout << "\n-------------------------\n";
 		}
 	}
+	cout << endl << endl;
+
+	//change the augumented matrix into a normal matrix A
+	//display the matrix A
+	for (i = 0; i < rows; i++)
+	{
+		for (j = cols; j < auguCols; j++)
+		{
+			matrix[i][j - cols] = matrix_A[i][j];
+		}
+	}
+	cout << "Matrix A nxn:\n";
+	for (i = 0; i < rows; i++)
+	{
+		for (j = 0; j < cols; j++)
+		{
+			cout << setw(7) << matrix[i][j];
+		}
+		cout << endl;
+	}
+	cout << endl;
+
+
+	//compute inverse of A times vector b
+	//x = (A-1) b
+	matrixMulti(rows, 1, cols, matrix, vB, vX);
+
+
+	//display the vector x
+	cout << "Vector x:\n";
+	for (i = 0; i < cols; i++)
+	{
+		cout << setw(7) << vX[i][0] << endl;
+	}
+	cout << endl << endl;
+
+
+	//efficiency of the program
+	cout << "Multiplication: " << tm << endl;
+	cout << "Addition/sub  : " << ta << endl;
 
 	return 0;
 	
@@ -146,6 +228,8 @@ void matrixMulti(int rows, int cols, int commonCR, double** matrix_A, double** m
 			for (j = 0; j < commonCR; j++)
 			{
 				matrix_C[i][k] += matrix_A[i][j] * matrix_B[j][k];
+				tm++;
+				ta++;
 			}
 		}
 	}
@@ -160,6 +244,7 @@ void constantMulti(int auguCols, double** matrix_A, int cycle, double* pivot)
 		for (j = 0; j < auguCols; j++)
 		{
 			matrix_A[i][j] /= pivot[i];
+			tm++;
 		}
 	}
 }
@@ -178,6 +263,8 @@ void eliminationAbovePivot(int auguCols, double** matrix_A, int cycle)
 			for (k = 0; k < auguCols; k++)
 			{
 				matrix_A[j][k] -= (multiplier / p) * matrix_A[i][k];
+				tm++;
+				ta++;
 			}
 
 		}
@@ -248,6 +335,8 @@ int eliminationMatrix_A(int rows, int cols, int auguCols, double **matrix_A, dou
 		for (k = 0; k < auguCols; k++)
 		{
 			matrix_A[i + rowOperate][k] -= (multiplier / pivot[i]) * matrix_A[i][k];
+			tm++;
+			ta++;
 		}
 		rowOperate++;
 

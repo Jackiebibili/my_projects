@@ -9,8 +9,10 @@ A = LDU factorization and then Lc = b and Ux = c
 #include<cmath>
 #include<iomanip>
 #include<string>
-
 using namespace std;
+
+int tm = 0; //efficiency of the program
+int ta = 0;
 
 void eliminationAbovePivot(int auguCols, double** matrix_A, int cycle);
 int eliminationMatrix_A(int rows, int cols, double** matrix_A, double* pivot, double* tempRow, double** matrix_L, int cycle);
@@ -203,6 +205,10 @@ int main()
 	cout << endl;
 
 
+	//efficiency of the program
+	cout << "Multiplication: " << tm << endl;
+	cout << "Addition/sub  : " << ta << endl;
+
 	return 0;
 }
 
@@ -212,8 +218,12 @@ void forwardSub(double** matrix_L, double* vectorC, double* vectorB, int i) // 0
 	int j;
 	for (j = 0; j <= i; j++)
 	{
-		if(i != j)
+		if (i != j)
+		{
 			vectorB[i] -= matrix_L[i][j] * vectorC[j]; //C must be initialized with 0.0
+			tm++;
+			ta++;
+		}
 	}
 	vectorC[i] = vectorB[i];
 }
@@ -224,10 +234,14 @@ void backwardSub(double** matrix_A, double* vectorX, double* vectorC, int cols, 
 	for (j = cols - 1; j >= i; j--)
 	{
 		if (i != j)
+		{
 			vectorC[i] -= matrix_A[i][j] * vectorX[j]; //X must be initialized with 0.0
+			tm++;
+			ta++;
+		}
 	}
 	vectorX[i] = vectorC[i] / matrix_A[i][i];
-
+	tm++;
 }
 
 
@@ -366,6 +380,8 @@ int eliminationMatrix_A(int rows, int cols, double** matrix_A, double* pivot, do
 		for (k = 0; k < cols; k++)
 		{
 			matrix_A[i + rowOperate][k] -= (matrix_L[i + rowOperate][i]) * matrix_A[i][k];
+			tm++;
+			ta++;
 		}
 		rowOperate++;
 
