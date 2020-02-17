@@ -24,10 +24,9 @@ int integerIdentify(int num);
 int main()
 {
 	int rows_A, cols_A;
-	int i, j;
+	int i, j, k;
 	cout << "Enter the row #m and col #n of a matrix A\n";
 	cin >> rows_A >> cols_A;
-
 
 	double** matrix_A = nullptr;
 	matrix_A = new double* [rows_A];
@@ -35,6 +34,11 @@ int main()
 	matrix_L = new double* [rows_A];
 	double** matrix_D = nullptr;
 	matrix_D = new double* [rows_A];
+	double** matrix_C = nullptr;
+	matrix_C = new double* [rows_A];
+	double** matrix_temp = nullptr;
+	matrix_temp = new double* [rows_A];
+
 	double* tempRow = nullptr;
 
 	for (i = 0; i < rows_A; i++)
@@ -52,8 +56,18 @@ int main()
 		matrix_D[i] = new double[cols_A];
 		//initialization needed
 	}
+	for (i = 0; i < rows_A; i++)
+	{
+		matrix_C[i] = new double[cols_A];
+	}
+	for (i = 0; i < rows_A; i++)
+	{
+		matrix_temp[i] = new double[cols_A];
+	}
 
-	//initialization of L and D
+
+
+	//initialization of L and D and C
 	for (i = 0; i < rows_A; i++)
 	{
 		for (j = 0; j < cols_A; j++)
@@ -64,6 +78,8 @@ int main()
 				matrix_L[i][j] = 0.0;
 
 			matrix_D[i][j] = 0.0;
+			matrix_C[i][j] = 0.0;
+			matrix_temp[i][j] = 0.0;
 		}
 	}
 
@@ -94,10 +110,13 @@ int main()
 			else
 				cout << setw(7) << matrix_A[i][j] << " ";
 		}
+		cout << endl;
 		if (i != rows_A - 1)
 		{
-			cout << "\n-------------------------\n";
+			for(k = 0; k < cols_A; k++)
+				cout << "---------";
 		}
+		cout << endl;
 	}
 	cout << endl << endl;
 
@@ -111,6 +130,11 @@ int main()
 
 	//divide each row by its pivot
 	constantMulti(cols_A, matrix_A, rows_A, matrix_D);
+
+	//calculate the multiplication of LDU = C
+	matrixMulti(rows_A, cols_A, cols_A, matrix_D, matrix_A, matrix_temp);
+	matrixMulti(rows_A, cols_A, cols_A, matrix_L, matrix_temp, matrix_C);
+
 
 	//display the relationship of A = LDU
 	cout << fixed << showpoint << setprecision(3);
@@ -150,6 +174,29 @@ int main()
 		}
 		*/
 	}
+
+
+	//display C(should be the same as A) on the left side
+	cout << endl;
+	cout << "Reassure Matrix A is the same as above: A=LDU\n";
+	for (i = 0; i < rows_A; i++)
+	{
+		for (j = 0; j < cols_A; j++)
+		{
+			if (matrix_C[i][j] == 0.0)
+				cout << setw(7) << "0" << " ";
+			else
+				cout << setw(7) << matrix_C[i][j] << " ";
+		}
+		cout << endl;
+		if (i != rows_A - 1)
+		{
+			for (k = 0; k < cols_A; k++)
+				cout << "---------";
+		}
+		cout << endl;
+	}
+	cout << endl << endl;
 
 	return 0;
 }
