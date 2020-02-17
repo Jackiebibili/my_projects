@@ -122,7 +122,7 @@ int main()
 
 
 	//factorization of A into U
-	for (i = rows_A - 1; i >= 0; i--)///////////////
+	for (i = rows_A - 1; i >= 0; i--)///////////////issues!!!!!
 	{
 		if (eliminationMatrix_A(rows_A, cols_A, matrix_A, matrix_D, tempRow, matrix_L, i) == -1)
 			exit(0);
@@ -167,12 +167,6 @@ int main()
 				cout << setw(7) << matrix_A[i][j] << " ";
 		}
 		cout << endl;
-		/*
-		if (i != rows_A - 1)
-		{
-			cout << "\n-------------------------\n";
-		}
-		*/
 	}
 
 
