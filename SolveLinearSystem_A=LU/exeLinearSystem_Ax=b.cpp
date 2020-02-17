@@ -17,6 +17,9 @@ int eliminationMatrix_A(int rows, int cols, double** matrix_A, double* pivot, do
 void constantMulti(int auguCols, double** matrix_A, int cycle, double* pivot);
 void matrixMulti(int rows, int cols, int commonCR, double** matrix_A, double** matrix_B, double** matrix_C);
 int integerIdentify(int num);
+void forwardSub(double** matrix_L, double* vectorC, double* vectorB, int i); // 0 <= i < n
+void backwardSub(double** matrix_A, double* vectorX, double* vectorC, int cols, int i); // 0 <= i < n
+
 
 int main()
 {
@@ -31,6 +34,12 @@ int main()
 	matrix_L = new double* [rows_A];
 	double** matrix_temp = nullptr;
 	matrix_temp = new double* [rows_A];
+	double* vB = nullptr;
+	vB = new double[cols_A];
+	double* vC = nullptr;
+	vC = new double[cols_A];
+	double* vX = nullptr;
+	vX = new double[cols_A];
 
 	double* tempRow = nullptr;
 
@@ -41,6 +50,15 @@ int main()
 	{
 		pivot[i] = 1.0;
 	}
+	for (i = 0; i < cols_A; i++)
+	{
+		vC[i] = 0.0;
+	}
+	for (i = 0; i < cols_A; i++)
+	{
+		vX[i] = 0.0; //must be 0.0
+	}
+
 
 	for (i = 0; i < rows_A; i++)
 	{
@@ -58,8 +76,7 @@ int main()
 	}
 
 
-
-	//initialization of L and D and C
+	//initialization of L and D
 	for (i = 0; i < rows_A; i++)
 	{
 		for (j = 0; j < cols_A; j++)
@@ -88,6 +105,16 @@ int main()
 		}
 	}
 
+	//Enter for the vector b: Ax = b
+	cout << "Enter the vector b each at a time, separate by a space\n";
+	for (i = 0; i < cols_A; i++)
+	{
+		cin >> vB[i];
+	}
+	cout << "--------\n";
+	cout << endl;
+
+
 	//display A on the left side
 	cout << endl << endl;
 	cout << "Matrix A:\n";
@@ -108,7 +135,15 @@ int main()
 		}
 		cout << endl;
 	}
-	cout << endl << endl;
+	cout << endl;
+
+	//display the vector b vertically
+	cout << "Vector b:\n";
+	for (i = 0; i < cols_A; i++)
+	{
+		cout << setw(7) << vB[i] << endl;
+	}
+	cout << endl;
 
 
 	//factorization of A into U
@@ -119,7 +154,8 @@ int main()
 	}
 
 
-	//display the relationship of A = LDU
+	//display the relationship of A = LU
+	cout << endl;
 	cout << fixed << showpoint << setprecision(3);
 	cout << "LU:\n";
 	for (i = 0; i < rows_A; i++)
@@ -142,10 +178,60 @@ int main()
 		}
 		cout << endl;
 	}
+	cout << endl << endl;
+
+
+	//forward substitution Lc = b
+	for (i = 0; i < cols_A; i++)
+	{
+		forwardSub(matrix_L, vC, vB, i);
+	}
+	//backward substitution Ux = c
+	for (i = cols_A - 1; i >= 0; i--)
+	{
+		backwardSub(matrix_A, vX, vC, cols_A, i);
+	}
+
+	
+	//display the solution x vertically
+	cout << endl;
+	cout << "Vector x:\n";
+	for (i = 0; i < cols_A; i++)
+	{
+		cout << setw(7) << vX[i] << endl;
+	}
+	cout << endl;
 
 
 	return 0;
 }
+
+
+void forwardSub(double** matrix_L, double* vectorC, double* vectorB, int i) // 0 <= i < n
+{
+	int j;
+	for (j = 0; j <= i; j++)
+	{
+		if(i != j)
+			vectorB[i] -= matrix_L[i][j] * vectorC[j]; //C must be initialized with 0.0
+	}
+	vectorC[i] = vectorB[i];
+}
+
+void backwardSub(double** matrix_A, double* vectorX, double* vectorC, int cols, int i) // 0 <= i < n
+{
+	int j;
+	for (j = cols - 1; j >= i; j--)
+	{
+		if (i != j)
+			vectorC[i] -= matrix_A[i][j] * vectorX[j]; //X must be initialized with 0.0
+	}
+	vectorX[i] = vectorC[i] / matrix_A[i][i];
+
+}
+
+
+
 
 //have issue finding fraction less than 1, use causiously
 int integerIdentify(int num)
