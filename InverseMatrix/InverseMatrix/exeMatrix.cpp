@@ -9,7 +9,7 @@ using namespace std;
 void eliminationAbovePivot(int auguCols, double** matrix_A, int cycle);
 int eliminationMatrix_A(int rows, int cols, int auguCols, double** matrix_A, double* pivot, double* tempRow, int cycle);
 void constantMulti(int auguCols, double** matrix_A, int cycle, double* pivot);
-void matrixMulti(int rows, int cols, double** matrix_A, double** matrix_B, double** matrix_C);
+void matrixMulti(int rows, int cols, int commonCR, double** matrix_A, double** matrix_B, double** matrix_C);
 int integerIdentify(int num);
 
 int main()
