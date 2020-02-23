@@ -4,37 +4,72 @@
 #include<memory>
 #include<string>
 #include<vector>
+#include<cmath>
 using namespace std;
 
 //function prototypes
-void transposeOperation(double** matrix, int rows, int cols);
+void transposeOperation(shared_ptr<shared_ptr<double[]>[]> matrix, int rows, int cols);
 shared_ptr<shared_ptr<double[]>[]> inputMatrix(int& rows, int& cols);
-
+void displayMatrix(shared_ptr<shared_ptr<double[]>[]> ptr, int row, int col);
+void displayElem(double entry);
 
 int main()
 {
 	int row, col;
-	int i, j;
+	//int i, j;
 	shared_ptr<shared_ptr<double[]>[]> ptr;
+
+	//get the user's input
 	ptr = inputMatrix(row, col);
 
+	//display the user's input matrix
+	displayMatrix(ptr, row, col);
 
-	//display the detail
-	//display the relationship of A = LU
+	//calculate the transpose of the matrix
+	transposeOperation(ptr, row, col);
+
+	//display the transpose of the matrix
+	displayMatrix(ptr, row, col);
+
+	return 0;
+}
+
+void displayMatrix(shared_ptr<shared_ptr<double[]>[]> ptr, int row, int col)
+{
+	//display the detailed entries of a matrix
+	int i, j;
 	cout << endl;
-	cout << fixed << showpoint << setprecision(3);
 	for (i = 0; i < row; i++)
 	{
 		for (j = 0; j < col; j++)
 		{
-			if (ptr[i][j] == 0.0)
-				cout << setw(7) << "0" << " ";
-			else
-				cout << setw(7) << ptr[i][j] << " ";
+			displayElem(ptr[i][j]);
 		}
 		cout << endl;
 	}
+
 }
+
+
+void displayElem(double entry)
+{
+	cout << fixed << showpoint << setprecision(3);
+	if (entry - static_cast<int>(entry) == 0.0)
+		cout << setw(7) << static_cast<int>(entry) << " ";
+	else
+	{
+		int i = 1;
+		while (i < 3)	//entry * 1000
+		{			
+			if (entry - static_cast<int>(entry * pow(10, i)) == 0.0)
+				cout << setw(7) << static_cast<int>(entry * pow(10, i)) << " ";
+			i++;
+		}
+		cout << setw(7) << static_cast<int>(entry * pow(10, i)) << " ";
+
+	}
+}
+
 
 
 shared_ptr<shared_ptr<double[]>[]> inputMatrix(int& rows, int& cols)
@@ -53,52 +88,60 @@ shared_ptr<shared_ptr<double[]>[]> inputMatrix(int& rows, int& cols)
 		{
 			firstRow.push_back(stod(line));
 			line = "";
+			j++;
 		}
 		j++;
 	}
 	cols = rows = j;
+
+
 	//dynamically allocate memory
 	shared_ptr<shared_ptr<double[]>[]> matrix (new shared_ptr<double[]> [cols]);
-	for (i = 0; i < cols; i++)
-	{
-		shared_ptr<double[]> matrix(new double[cols]);
-	}
+	shared_ptr<double[]> m_row (new double[cols]); //assist for each row's input
 
-	//copy the first row to the 2D array
+	//copy the first row to the 2D array  ||row = 0
+	//m_row = make_shared<double[]>(cols);
 	for (i = 0; i < cols; i++)
 	{
-		matrix[0][i] = firstRow[i];
+		//shared_ptr<double[]> matrix(new double[cols]);
+		//matrix[i].get() = make_shared<double[]>[cols];
+		m_row[i] = firstRow[i];
 	}
+	matrix[0] = move(m_row);
 
 	//the rest of the rows
 	i = 1;
-	while (getline(cin, line))
+	m_row.reset(new double[cols]);
+	//m_row = make_shared<double[]>(cols);
+	while (i < cols && getline(cin, line))
 	{
 		if (line == "")
 			break;
 		for (j = 0; j < cols && line != ""; j++)
 		{
-			matrix[i][j] = stod(line.substr(0, line.find(' ')));
+			m_row[j] = stod(line.substr(0, line.find(' ')));
 			line.erase(0, line.find(' ') + 1);
 		}
+		matrix[i] = move(m_row);
+		m_row.reset(new double[cols]);
 		i++;
 	}
-	cout << "End of reading a matrix\n";
-	
+	cout << "Finish reading the matrix\n";
+	cout << "It's a " << rows << "x" << cols << " matrix\n";
 	return matrix;
 }
 
 
 
-void transposeOperation(double** matrix, int rows, int cols)
+void transposeOperation(shared_ptr<shared_ptr<double[]>[]> matrix, int rows, int cols)
 {
-	int i, j;
+	int i, j, k = 1;
 	for (i = 0; i < rows; i++)
 	{
-		for (j = 0; j < cols; j++)
+		for (j = k; j < cols; j++)
 		{
-			if(i != j)
-				swap(matrix[i][j], matrix[j][i]);
+			swap(matrix[i][j], matrix[j][i]);
 		}
+		k++;
 	}
 }
