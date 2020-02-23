@@ -14,6 +14,10 @@ using namespace std;
 int tm = 0; //efficiency of the program
 int ta = 0;
 
+//global constants
+const int PRECISION = 3;	//accuracy of the decimal pts for each entries
+
+
 void eliminationAbovePivot(int auguCols, double** matrix_A, int cycle);
 int eliminationMatrix_A(int rows, int cols, double** matrix_A, double* pivot, double* tempRow, double** matrix_L, int cycle);
 void constantMulti(int auguCols, double** matrix_A, int cycle, double* pivot);
@@ -21,12 +25,16 @@ void matrixMulti(int rows, int cols, int commonCR, double** matrix_A, double** m
 int integerIdentify(int num);
 void forwardSub(double** matrix_L, double* vectorC, double* vectorB, int i); // 0 <= i < n
 void backwardSub(double** matrix_A, double* vectorX, double* vectorC, int cols, int i); // 0 <= i < n
+void displayMatrix(double** ptr, int row, int col);
+void displayMatrix(double* ptr, int row);
+void displayMatrixLU(double** ptr1, double** ptr2, int row, int col);
+void displayElem(double entry, int pts = PRECISION);
 
 
 int main()
 {
 	int rows_A, cols_A;
-	int i, j, k;
+	int i, j;
 	cout << "Enter the row #m and col #n of a matrix A\n";
 	cin >> rows_A >> cols_A;
 
@@ -120,32 +128,12 @@ int main()
 	//display A on the left side
 	cout << endl << endl;
 	cout << "Matrix A:\n";
-	for (i = 0; i < rows_A; i++)
-	{
-		for (j = 0; j < cols_A; j++)
-		{
-			if (matrix_A[i][j] == 0.0)
-				cout << setw(7) << "0" << " ";
-			else
-				cout << setw(7) << matrix_A[i][j] << " ";
-		}
-		cout << endl;
-		if (i != rows_A - 1)
-		{
-			for (k = 0; k < cols_A; k++)
-				cout << "---------";
-		}
-		cout << endl;
-	}
-	cout << endl;
+	displayMatrix(matrix_A, rows_A, cols_A);
+
 
 	//display the vector b vertically
 	cout << "Vector b:\n";
-	for (i = 0; i < cols_A; i++)
-	{
-		cout << setw(7) << vB[i] << endl;
-	}
-	cout << endl;
+	displayMatrix(vB, rows_A);
 
 
 	//factorization of A into U
@@ -160,27 +148,7 @@ int main()
 	cout << endl;
 	cout << fixed << showpoint << setprecision(3);
 	cout << "LU:\n";
-	for (i = 0; i < rows_A; i++)
-	{
-		for (j = 0; j < cols_A; j++)
-		{
-			if (matrix_L[i][j] == 0.0)
-				cout << setw(7) << "0" << " ";
-			else
-				cout << setw(7) << matrix_L[i][j] << " ";
-		}
-		cout << " | ";
-
-		for (j = 0; j < cols_A; j++)
-		{
-			if (matrix_A[i][j] == 0.0)
-				cout << setw(7) << "0" << " ";
-			else
-				cout << setw(7) << matrix_A[i][j] << " ";
-		}
-		cout << endl;
-	}
-	cout << endl << endl;
+	displayMatrixLU(matrix_L, matrix_A, rows_A, cols_A);
 
 
 	//forward substitution Lc = b
@@ -198,11 +166,7 @@ int main()
 	//display the solution x vertically
 	cout << endl;
 	cout << "Vector x:\n";
-	for (i = 0; i < cols_A; i++)
-	{
-		cout << setw(7) << vX[i] << endl;
-	}
-	cout << endl;
+	displayMatrix(vX, rows_A);
 
 
 	//efficiency of the program
@@ -210,6 +174,94 @@ int main()
 	cout << "Addition/sub  : " << ta << endl;
 
 	return 0;
+}
+
+
+void displayMatrix(double** ptr, int row, int col)
+{
+	//display the detailed entries of a matrix
+	int i, j, k;
+	cout << endl;
+	for (i = 0; i < row; i++)
+	{
+		for (j = 0; j < col; j++)
+		{
+			displayElem(ptr[i][j]);
+		}
+		cout << endl;
+		//dash line for better view of the matrix entries
+		if (i < row - 1) //ignore appending the last-row dash line 
+		{
+			for (k = 0; k < col; k++)
+				cout << "---------";
+		}
+		cout << endl;
+	}
+	cout << endl;
+}
+
+
+void displayMatrix(double* ptr, int row)
+{
+	//display the detailed entries of a vector
+	int i;
+	cout << endl;
+	for (i = 0; i < row; i++)
+	{
+		displayElem(ptr[i]);
+		cout << endl;
+	}
+	cout << endl;
+
+}
+
+
+void displayMatrixLU(double** ptr1, double** ptr2, int row, int col)
+{
+	//display the detailed entries of a matrix
+	int i, j, k;
+	cout << endl;
+	for (i = 0; i < row; i++)
+	{
+		for (j = 0; j < col; j++)
+		{
+			displayElem(ptr1[i][j]);
+		}
+		cout << " | ";
+		for (j = 0; j < col; j++)
+		{
+			displayElem(ptr2[i][j]);
+		}
+		cout << endl;
+	}
+	cout << endl << endl;
+}
+
+
+
+void displayElem(double entry, int pts)
+{
+	cout << fixed << showpoint << setprecision(pts);
+	if (entry - static_cast<int>(entry) == 0.0)
+		cout << setw(7) << static_cast<int>(entry) << " ";
+	else
+	{
+		int i = 1;
+		while (i < pts)	//entry * 10 ^n folds
+		{
+			if ((entry * pow(10, i)) - static_cast<int>(entry * pow(10, i)) == 0.0)
+			{
+				cout << setprecision(i);
+				cout << setw(7) << entry << " ";
+				cout << setprecision(pts);
+				break;
+			}
+			i++;
+		}
+		if (i == pts)
+			cout << setw(7) << entry << " "; //default 3 decimal points
+
+	}
 }
 
 
@@ -393,20 +445,3 @@ int eliminationMatrix_A(int rows, int cols, double** matrix_A, double* pivot, do
 	return 1;
 }
 
-
-//print out the 2d array(every entry of it)
-/*
-	for (i = 0; i < rows; i++)
-	{
-		for (j = 0; j < cols; j++)
-		{
-			cout << matrix_A[i][j] << "  ";
-
-		}
-		if (i != rows - 1)
-		{
-			cout << "\n--------\n";
-		}
-	}
-
-*/

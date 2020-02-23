@@ -1,3 +1,4 @@
 ﻿  exeLinearSystem_Ax=b.cpp
-B:\CS 1337 Smith\others\SolveLinearSystem_A=LU\exeLinearSystem_Ax=b.cpp(258,20): warning C4018: '<': signed/unsigned mismatch
+B:\CS 1337 Smith\others\SolveLinearSystem_A=LU\exeLinearSystem_Ax=b.cpp(222,12): warning C4101: 'k': unreferenced local variable
+B:\CS 1337 Smith\others\SolveLinearSystem_A=LU\exeLinearSystem_Ax=b.cpp(310,20): warning C4018: '<': signed/unsigned mismatch
   SolveLinearSystem_A=LU.vcxproj -> B:\CS 1337 Smith\others\SolveLinearSystem_A=LU\Debug\SolveLinearSystem_A=LU.exe
