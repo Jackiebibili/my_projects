@@ -7,11 +7,14 @@
 #include<cmath>
 using namespace std;
 
+//global constants
+const int PRECISION = 3;	//accuracy of the decimal pts for each entries
+
 //function prototypes
 void transposeOperation(shared_ptr<shared_ptr<double[]>[]> matrix, int rows, int cols);
 shared_ptr<shared_ptr<double[]>[]> inputMatrix(int& rows, int& cols);
 void displayMatrix(shared_ptr<shared_ptr<double[]>[]> ptr, int row, int col);
-void displayElem(double entry);
+void displayElem(double entry, int pts = PRECISION);
 
 int main()
 {
@@ -51,21 +54,27 @@ void displayMatrix(shared_ptr<shared_ptr<double[]>[]> ptr, int row, int col)
 }
 
 
-void displayElem(double entry)
+void displayElem(double entry, int pts)
 {
-	cout << fixed << showpoint << setprecision(3);
+	cout << fixed << showpoint << setprecision(pts);
 	if (entry - static_cast<int>(entry) == 0.0)
 		cout << setw(7) << static_cast<int>(entry) << " ";
 	else
 	{
 		int i = 1;
-		while (i < 3)	//entry * 1000
+		while (i < pts)	//entry * 10 ^n folds
 		{			
-			if (entry - static_cast<int>(entry * pow(10, i)) == 0.0)
-				cout << setw(7) << static_cast<int>(entry * pow(10, i)) << " ";
+			if ((entry * pow(10, i)) - static_cast<int>(entry * pow(10, i)) == 0.0)
+			{
+				cout << setprecision(i);
+				cout << setw(7) << entry << " ";
+				cout << setprecision(pts);
+				break;
+			}
 			i++;
 		}
-		cout << setw(7) << static_cast<int>(entry * pow(10, i)) << " ";
+		if(i == pts)
+			cout << setw(7) << entry << " "; //default 3 decimal points
 
 	}
 }
