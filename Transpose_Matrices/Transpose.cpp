@@ -40,7 +40,7 @@ int main()
 void displayMatrix(shared_ptr<shared_ptr<double[]>[]> ptr, int row, int col)
 {
 	//display the detailed entries of a matrix
-	int i, j;
+	int i, j, k;
 	cout << endl;
 	for (i = 0; i < row; i++)
 	{
@@ -49,8 +49,13 @@ void displayMatrix(shared_ptr<shared_ptr<double[]>[]> ptr, int row, int col)
 			displayElem(ptr[i][j]);
 		}
 		cout << endl;
+		if (i < row - 1)
+		{
+			for (k = 0; k < row; k++)
+				cout << "--------";
+		}
+		cout << endl;
 	}
-
 }
 
 
@@ -58,7 +63,7 @@ void displayElem(double entry, int pts)
 {
 	cout << fixed << showpoint << setprecision(pts);
 	if (entry - static_cast<int>(entry) == 0.0)
-		cout << setw(7) << static_cast<int>(entry) << " ";
+		cout << setw(6) << static_cast<int>(entry) << " ";
 	else
 	{
 		int i = 1;
@@ -67,14 +72,14 @@ void displayElem(double entry, int pts)
 			if ((entry * pow(10, i)) - static_cast<int>(entry * pow(10, i)) == 0.0)
 			{
 				cout << setprecision(i);
-				cout << setw(7) << entry << " ";
+				cout << setw(6) << entry << " ";
 				cout << setprecision(pts);
 				break;
 			}
 			i++;
 		}
 		if(i == pts)
-			cout << setw(7) << entry << " "; //default 3 decimal points
+			cout << setw(6) << entry << " "; //default 3 decimal points
 
 	}
 }
