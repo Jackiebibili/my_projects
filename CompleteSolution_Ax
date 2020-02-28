@@ -1,4 +1,4 @@
 ﻿  exeLinearSolution.cpp
-B:\CS 1337 Smith\others\CompleteSolution_Ax=b\exeLinearSolution.cpp(132,20): warning C4018: '<': signed/unsigned mismatch
-B:\CS 1337 Smith\others\CompleteSolution_Ax=b\exeLinearSolution.cpp(170,9): warning C4101: 'j': unreferenced local variable
+B:\CS 1337 Smith\others\CompleteSolution_Ax=b\exeLinearSolution.cpp(166,20): warning C4018: '<': signed/unsigned mismatch
+B:\CS 1337 Smith\others\CompleteSolution_Ax=b\exeLinearSolution.cpp(204,9): warning C4101: 'j': unreferenced local variable
   CompleteSolution_Ax=b.vcxproj -> B:\CS 1337 Smith\others\CompleteSolution_Ax=b\Debug\CompleteSolution_Ax=b.exe

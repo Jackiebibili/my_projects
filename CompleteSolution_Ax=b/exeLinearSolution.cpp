@@ -13,6 +13,7 @@ void matrixMulti(int rows, int cols, int commonCR, double** matrix_A, double** m
 int integerIdentify(int num);
 void displayElem(double entry, int pts = 3);
 void displayMatrix(double** ptr, int row, int col);
+void particularSolution(double** ptr, double** vX, int* index, int auguCols, int rows);
 
 
 int main()
@@ -37,7 +38,13 @@ int main()
 		vB[i] = new double[1];
 		//initialization needed
 	}
-
+	double** vX = nullptr;
+	vX = new double* [cols];
+	for (i = 0; i < cols; i++)
+	{
+		vX[i] = new double[1];
+		vX[i][0] = 0.0;	//initialization
+	}
 
 
 	cout << "Enter the matrix A by entering each row at a time\n";
@@ -74,6 +81,7 @@ int main()
 	}
 
 	//display the [A b] before computing
+	cout << endl << "[A b] = \n";
 	displayMatrix(matrix_A, rows, auguCols);
 	//check point V
 
@@ -110,16 +118,42 @@ int main()
 	eliminationAbovePivot(auguCols, matrix_A, index, real_row);
 
 
-	cout << fixed << showpoint << setprecision(2);
+	//cout << fixed << showpoint << setprecision(2);
 	cout << "[R d] is: \n";
 
 	//display the [R d] after computing
 	displayMatrix(matrix_A, rows, auguCols);
 	//check point
 
+
+	//find the particular solution
+	particularSolution(matrix_A, vX, index, auguCols, real_row);
+
+	//display the Xp
+	cout << "Xp = \n";
+	displayMatrix(vX, cols, 1);
+
+
+
 	return 0;
 
 }
+
+
+
+void particularSolution(double** ptr, double** vX, int* index, int auguCols, int rows)
+{
+	int i = 0;
+	while (i < rows)
+	{
+		vX[index[i]][0] = ptr[i][index[i]];
+		i++;
+	}
+}
+
+
+
+
 
 //have issue finding fraction less than 1, use causiously
 int integerIdentify(int num)
