@@ -11,7 +11,7 @@ int eliminationMatrix_A(int rows, int cols, int auguCols, double** matrix_A, dou
 void constantMulti(int auguCols, double** matrix_A, int cycle, double* pivot);
 void matrixMulti(int rows, int cols, int commonCR, double** matrix_A, double** matrix_B, double** matrix_C);
 int integerIdentify(int num);
-void displayElem(double entry, int pts = 3);
+void displayElem(double entry, int pts = 2);
 void displayMatrix(double** ptr, int row, int col);
 void particularSolution(double** ptr, double** vX, int* index, int rows, int auguCols);
 void nullspaceSolution(double** ptr, int dimen, int rows, int cols, int* index);
@@ -137,13 +137,18 @@ int main()
 
 	//find the nullspace N(A) solution(s)
 	xnDim = cols - real_row;
-	cout << "There exist solution(s) in R^";
+	cout << "There exist solution(s) in the subset of the column space of R^";
 	if (xnDim > 0)
-		cout << cols - real_row + 1;
+	{
+		cout << cols - real_row;
+		nullspaceSolution(matrix_A, xnDim, real_row, cols, index);
+		cout << endl;
+	}
 	else
-		cout << 1;
-	cout << endl;
-	nullspaceSolution(matrix_A, xnDim, real_row, cols, index);
+	{
+		cout << "1\n";
+		cout << "The nullspace solution is {0}" << endl;
+	}
 	return 0;
 
 }
@@ -170,7 +175,7 @@ void nullspaceSolution(double** ptr, int dimen, int rows, int cols, int* index)
 	{
 		xn[i] = new double[dimen];
 	}
-	//must initialize to 1
+	//must initialize to 0
 	for (i = 0; i < dimen; i++)
 	{
 		for (j = 0; j < cols; j++)
@@ -206,6 +211,11 @@ void nullspaceSolution(double** ptr, int dimen, int rows, int cols, int* index)
 		{
 			xn[index[j]][k] = -ptr[j][free[k]];
 		}
+	}
+	//free varibles to be 1.0
+	for (i = 0; i < dimen; i++)
+	{
+		xn[free[i]][i] = 1.0;
 	}
 	cout << endl;
 	displayMatrix(xn, cols, dimen);
@@ -416,11 +426,12 @@ void displayMatrix(double** ptr, int row, int col)
 		cout << endl;
 		if (i < row - 1)
 		{
-			for (k = 0; k < row; k++)
-				cout << "--------";
+			for (k = 0; k < col; k++)
+				cout << "-------";
 		}
 		cout << endl;
 	}
+	cout << endl;
 }
 
 
