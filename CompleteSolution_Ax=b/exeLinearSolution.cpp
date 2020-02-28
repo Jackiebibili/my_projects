@@ -13,7 +13,8 @@ void matrixMulti(int rows, int cols, int commonCR, double** matrix_A, double** m
 int integerIdentify(int num);
 void displayElem(double entry, int pts = 3);
 void displayMatrix(double** ptr, int row, int col);
-void particularSolution(double** ptr, double** vX, int* index, int auguCols, int rows);
+void particularSolution(double** ptr, double** vX, int* index, int rows, int auguCols);
+void nullspaceSolution(double** ptr, int dimen, int rows, int cols, int* index);
 
 
 int main()
@@ -21,6 +22,7 @@ int main()
 	int rows, cols;
 	int i, j;
 	int real_row;
+	int xnDim = 0;
 	cout << "Enter the row #m and col #n of a matrix A\n";
 	cin >> rows >> cols;
 	double** matrix_A = nullptr;
@@ -127,31 +129,87 @@ int main()
 
 
 	//find the particular solution
-	particularSolution(matrix_A, vX, index, auguCols, real_row);
+	particularSolution(matrix_A, vX, index, real_row, auguCols);
 
 	//display the Xp
 	cout << "Xp = \n";
 	displayMatrix(vX, cols, 1);
 
-
-
+	//find the nullspace N(A) solution(s)
+	xnDim = cols - real_row;
+	cout << "There exist solution(s) in R^";
+	if (xnDim > 0)
+		cout << cols - real_row + 1;
+	else
+		cout << 1;
+	cout << endl;
+	nullspaceSolution(matrix_A, xnDim, real_row, cols, index);
 	return 0;
 
 }
 
 
 
-void particularSolution(double** ptr, double** vX, int* index, int auguCols, int rows)
+void particularSolution(double** ptr, double** vX, int* index, int rows, int auguCols)
 {
 	int i = 0;
 	while (i < rows)
 	{
-		vX[index[i]][0] = ptr[i][index[i]];
+		vX[index[i]][0] = ptr[i][auguCols - 1];
 		i++;
 	}
 }
 
 
+void nullspaceSolution(double** ptr, int dimen, int rows, int cols, int* index)
+{
+	int i, j, k;
+	double** xn = nullptr;
+	xn = new double* [cols];
+	for (i = 0; i < cols; i++)
+	{
+		xn[i] = new double[dimen];
+	}
+	//must initialize to 1
+	for (i = 0; i < dimen; i++)
+	{
+		for (j = 0; j < cols; j++)
+		{
+			xn[j][i] = 0.0;
+		}
+	}
+	k = 0;
+	bool test = true;
+	int* free = nullptr;
+	free = new int[dimen];
+	//get the free row number(since 0)
+	for (i = 0; i < cols; i++)
+	{
+		for (j = 0; j < cols; j++)
+		{
+			if (i == index[j])
+			{
+				test = false;
+				break;
+			}
+		}
+		if (test)
+		{
+			free[k] = i;
+			k++;
+		}
+		test = true;
+	}
+	for (k = 0; k < dimen; k++)
+	{
+		for (j = 0; j < rows; j++)
+		{
+			xn[index[j]][k] = -ptr[j][free[k]];
+		}
+	}
+	cout << endl;
+	displayMatrix(xn, cols, dimen);
+}
 
 
 
@@ -205,6 +263,7 @@ void eliminationAbovePivot(int auguCols, double** matrix_A, int *index, int minR
 	double multiplier = 0.0;
 	double p = 1.0;
 	int pos = 0;
+	/*
 	for (i = 0; i < minRow - 1; i++)
 	{
 		//the second row subtracts from the first row
@@ -216,6 +275,21 @@ void eliminationAbovePivot(int auguCols, double** matrix_A, int *index, int minR
 		}
 
 	}
+	*/
+	for (i = 1; i < minRow; i++)
+	{
+		for (j = i - 1; j >= 0; j--)
+		{
+			pos = index[i];
+			multiplier = matrix_A[j][pos];
+			for (k = 0; k < auguCols; k++)
+			{
+				matrix_A[j][k] -= (multiplier / p) * matrix_A[i][k];
+			}
+
+		}
+	}
+
 }
 
 
