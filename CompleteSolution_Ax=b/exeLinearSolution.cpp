@@ -110,8 +110,11 @@ int main()
 	for (i = rows - 1; i >= 0; i--)
 	{
 		real_row = eliminationMatrix_A(rows, cols, auguCols, matrix_A, pivot, index, tempRow, i);
-		if (real_row== -1)
+		if (real_row == -1)
+		{
+			cout << "Inconsistency\nThe systems have no solution\n";
 			exit(0);
+		}
 	}
 
 	//3. divide/multiply each row with a number so that it the left part form an identity matrix
@@ -325,7 +328,7 @@ int eliminationMatrix_A(int rows, int cols, int auguCols, double** matrix_A, dou
 		if (matrix_A[i][col_x] != 0)
 			break;
 	}
-	if (col_x >= auguCols)	//reach the first all-zero's row
+	if (col_x == auguCols)	//reach the first all-zero's row
 	{
 		//verify the rest of the row to be all zero's
 		if (i == rows)	//already the last row all-zero's
@@ -340,6 +343,8 @@ int eliminationMatrix_A(int rows, int cols, int auguCols, double** matrix_A, dou
 		}
 		return i;
 	}
+	else if (col_x == auguCols - 1)
+		return -1;
 
 	//still have pivots to compute
 	pivot[i] = matrix_A[i][col_x];
