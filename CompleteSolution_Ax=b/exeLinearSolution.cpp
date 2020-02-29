@@ -153,6 +153,9 @@ int main()
 		cout << "1\n";
 		cout << "The nullspace solution is {0}" << endl;
 	}
+
+	//system pause included for exe file
+	system("pause");
 	return 0;
 
 }
