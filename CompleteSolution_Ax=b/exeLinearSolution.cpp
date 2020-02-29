@@ -112,6 +112,7 @@ int main()
 		real_row = eliminationMatrix_A(rows, cols, auguCols, matrix_A, pivot, index, tempRow, i);
 		if (real_row == -1)
 		{
+			displayMatrix(matrix_A, rows, auguCols);
 			cout << "Inconsistency\nThe systems have no solution\n";
 			exit(0);
 		}
