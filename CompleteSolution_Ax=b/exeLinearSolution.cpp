@@ -141,7 +141,7 @@ int main()
 
 	//find the nullspace N(A) solution(s)
 	xnDim = cols - real_row;
-	cout << "There exist solution(s) in the subset of the column space of R^";
+	cout << "There exist solution(s) in the column space of R^";
 	if (xnDim > 0)
 	{
 		cout << cols - real_row;
@@ -326,6 +326,34 @@ int eliminationMatrix_A(int rows, int cols, int auguCols, double** matrix_A, dou
 	double multiplier = 0.0;
 	int rowOperate = 1; //row advanced #: e.g. rO = 1 means it's currently at row #2
 
+	while (matrix_A[i][j] == 0.0)
+	{
+		//swap the row with the one comes right after
+		if (copyRowOff >= rows - 1 - i)		//validation
+		{
+			/*
+			cout << "Lack at least one non-zero pivot\n";
+			cout << "A is not invertible\n";
+			return -1;
+			*/
+			break;
+		}
+		for (k = 0; k < auguCols; k++)
+		{
+			tempRow[k] = matrix_A[i + 1 + copyRowOff][k];
+		}
+		for (k = 0; k < auguCols; k++)
+		{
+			matrix_A[i + 1 + copyRowOff][k] = matrix_A[i][k];
+		}
+		for (k = 0; k < auguCols; k++)
+		{
+			matrix_A[i][k] = tempRow[k];
+		}
+		copyRowOff++;
+	}
+	copyRowOff = 0;
+
 	//detect the first non-zero entry at that row = col_x
 	for (col_x = i; col_x < auguCols; col_x++)
 	{
@@ -371,32 +399,6 @@ int eliminationMatrix_A(int rows, int cols, int auguCols, double** matrix_A, dou
 	while (rowOperate <= cycle)
 	{
 		/*
-		while (matrix_A[i][j] == 0.0)
-		{
-			//swap the row with the one comes right after
-			if (copyRowOff >= rows - 1)		//validation
-			{
-				cout << "Lack at least one non-zero pivot\n";
-				cout << "A is not invertible\n";
-				return -1;
-			}
-			for (k = 0; k < auguCols; k++)
-			{
-				tempRow[k] = matrix_A[i + 1 + copyRowOff][k];
-			}
-			for (k = 0; k < auguCols; k++)
-			{
-				matrix_A[i + 1 + copyRowOff][k] = matrix_A[i][k];
-			}
-			for (k = 0; k < auguCols; k++)
-			{
-				matrix_A[i][k] = tempRow[k];
-			}
-			copyRowOff++;
-		}
-		*/
-		copyRowOff = 0;
-		/*
 		if (pivot[i] == 0.0)
 		{
 			cout << "Lack at least one non-zero pivot\n";
@@ -410,7 +412,7 @@ int eliminationMatrix_A(int rows, int cols, int auguCols, double** matrix_A, dou
 			matrix_A[i + rowOperate][k] -= (multiplier / pivot[i]) * matrix_A[i][k];
 		}
 		rowOperate++;
-
+		displayMatrix(matrix_A, rows, auguCols);
 	}
 	i++;
 	j++;
