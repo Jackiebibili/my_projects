@@ -79,10 +79,6 @@ int main()
 		}
 	}
 
-	//display the [A b] before computing
-	cout << endl << "[A b] = \n";
-	displayMatrix(matrix_A, rows, auguCols);
-	//check point V
 
 
 	double* pivot = nullptr;
@@ -119,13 +115,6 @@ int main()
 	//4. get entries above each pivot 0 by row adding/subtracting
 	eliminationAbovePivot(auguCols, matrix_A, index, real_row);
 
-
-	//cout << fixed << showpoint << setprecision(2);
-	cout << "[R d] is: \n";
-
-	//display the [R d] after computing
-	displayMatrix(matrix_A, rows, auguCols);
-	//check point
 
 
 	//find the particular solution
@@ -427,7 +416,7 @@ int eliminationMatrix_A(int rows, int cols, int auguCols, double** matrix_A, dou
 			matrix_A[i + rowOperate][k] -= (multiplier / pivot[i]) * matrix_A[i][k];
 		}
 		rowOperate++;
-		displayMatrix(matrix_A, rows, auguCols);
+		//displayMatrix(matrix_A, rows, auguCols);
 	}
 	i++;
 	j++;
