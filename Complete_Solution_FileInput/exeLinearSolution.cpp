@@ -59,8 +59,8 @@ int main()
 	getline(cin, nameVector);
 	cout << endl;
 
-	fstream file(nameMatrix);
-	fstream fileV(nameVector);
+	fstream file(nameMatrix, ios::in);
+	fstream fileV(nameVector, ios::in);
 	file.close();
 	fileV.close();
 	fileInput(file, nameMatrix, matrix_A, cols);
@@ -148,12 +148,17 @@ int main()
 
 void fileInput(fstream& file, string filename, double **ptr, int col)
 {
-	file.open(filename);
+	file.open(filename, ios::in);
 	file.clear();
 	int i = 0, j = 0;
-	while (file >> ptr[i][j])
+	string temp, l;
+	while (getline(file, temp, ','))
 	{
-		j++;
+		if (temp != "\n")
+		{
+			ptr[i][j] = stod(temp);
+			j++;
+		}
 		if (j >= col)
 		{
 			i++;

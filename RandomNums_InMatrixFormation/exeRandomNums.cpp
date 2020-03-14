@@ -31,9 +31,9 @@ void randomNums(fstream& file, string filename, int row, int col)
 	{
 		for (j = 0; j < col; j++)
 		{
-			file << 10 * (rand() % 10) + 1 * (rand() % 10) + 0.1 * (rand() % 10) + 0.01 * 1 * (rand() % 10) << " ";
+			file << 10 * (rand() % 10) + 1 * (rand() % 10) + 0.1 * (rand() % 10) + 0.01 * 1 * (rand() % 10) << ",";
 		}
-		file << endl;
+		file << "\n";
 	}
 	file.close();
 }
