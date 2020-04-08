@@ -1,3 +1,3 @@
 ﻿  exeMatrix.cpp
-B:\CS 1337 Smith\others\InverseMatrix\InverseMatrix\exeMatrix.cpp(213,20): warning C4018: '<': signed/unsigned mismatch
+B:\CS 1337 Smith\others\InverseMatrix\InverseMatrix\exeMatrix.cpp(215,20): warning C4018: '<': signed/unsigned mismatch
   InverseMatrix.vcxproj -> B:\CS 1337 Smith\others\InverseMatrix\Debug\InverseMatrix.exe

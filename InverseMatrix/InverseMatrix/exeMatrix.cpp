@@ -198,6 +198,8 @@ int main()
 	cout << "Multiplication: " << tm << endl;
 	cout << "Addition/sub  : " << ta << endl;
 
+
+	system("pause");
 	return 0;
 	
 }
