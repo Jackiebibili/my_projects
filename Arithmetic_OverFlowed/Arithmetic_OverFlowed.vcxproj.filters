@@ -27,6 +27,9 @@
     <ClInclude Include="Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Multiplication.cpp">
@@ -42,6 +45,9 @@
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkedList.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>

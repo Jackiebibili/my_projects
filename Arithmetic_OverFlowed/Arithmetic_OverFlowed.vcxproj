@@ -139,12 +139,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Addition.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Multiplication.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Subtraction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Addition.cpp" />
+    <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="Multiplication.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Source.cpp" />
