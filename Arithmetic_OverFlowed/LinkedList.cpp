@@ -3,22 +3,27 @@
 #include<iostream>
 #include<cstdlib>
 
-
 LinkedList::LinkedList()
 {
     head = nullptr;
+    numDigits = 0;
+    numNodes = 1;
 }
 
 
 LinkedList::LinkedList(Node* ptr)
 {
     head = ptr;
+    numNodes = NodeNum();
+    numDigits = numberDigits();
 }
 
 
-LinkedList::LinkedList(LinkedList*& h)
+LinkedList::LinkedList(LinkedList& h)
 {
-    initializeResult(h->getHead(), h->getNodeNum());
+    initializeResult(h.getHead(), h.getNodeNum());
+    numNodes = NodeNum();
+    numDigits = numberDigits();
 }
 
 
@@ -38,26 +43,25 @@ void LinkedList::initializeResult(Node* head1, int totalNode)
 }
 
 
-LinkedList* LinkedList::operator=(LinkedList*& right)
+LinkedList LinkedList::operator=(const LinkedList& right)
 {
-    if (this != right)
+    if (this != &right)
     {
         //delete all pre-existing nodes
-        emptyList();
-        numDigits = right->getNumDigits();
-        numNodes = right->getNodeNum();
-        initializeResult(right->getHead(), right->getNodeNum());
+        freeSpace();
+        head = nullptr;
+        numDigits = right.getNumDigits();
+        numNodes = right.getNodeNum();
+        initializeResult(right.getHead(), right.getNodeNum());
     }
+    return *this;
 }
 
 
 void LinkedList::addNode(int num, int pos)
 {
-    //Node* A = new Node, * ptr = head;
-    Node a (pos, num);
-    Node* A = &a, * ptr = head;
+    Node* A = new Node(pos, num), * ptr = head;
     A->setNext(nullptr);
-    //ptr = head;
     if (head == nullptr)
     {
         head = A;
@@ -70,10 +74,12 @@ void LinkedList::addNode(int num, int pos)
         }
         ptr->setNext(A);
     }
+    numNodes = NodeNum();
+    numDigits = numberDigits();
 }
 
 
-int LinkedList::getListValue(int pos)
+int LinkedList::getListValue(int pos) const
 {
     Node* ptr = head;
     while (ptr != nullptr && ptr->getPos() != pos)
@@ -86,7 +92,7 @@ int LinkedList::getListValue(int pos)
 }
 
 
-Node*& LinkedList::getHead()
+Node* LinkedList::getHead() const
 {
     return head;
 }
@@ -100,6 +106,8 @@ void LinkedList::setValue(int pos, int val)
         ptr = ptr->getNext();
     }
     ptr->setNum(val);
+    numNodes = NodeNum();
+    numDigits = numberDigits();
 }
 
 
@@ -113,7 +121,7 @@ void LinkedList::initializeResult(int totalNode)
     }
 }
 
-
+/*
 void LinkedList::incrementValue(int pos, int val)
 {
     Node* ptr = head;
@@ -123,7 +131,7 @@ void LinkedList::incrementValue(int pos, int val)
     }
     ptr->setNum(ptr->getNum() + val);
 }
-
+*/
 
 void LinkedList::modifyNumberNodes()
 {
@@ -181,33 +189,95 @@ int LinkedList::numberDigits()
 
 }
 
-
+/*
 void LinkedList::emptyList()
 {
     Node* ptr = head;
-    deleteAllNodes(ptr);
-    head = nullptr;
+    if (!head)
+    {
+        if(!head->getNext())
+            delete head;
+    }
+    else
+    {
+        deleteAllNodes(ptr);
+        head = nullptr;
+    }
+
+    numNodes = NodeNum();
+    numDigits = numberDigits();
 }
 
 
-void LinkedList::deleteAllNodes(Node*& ptr)
+void LinkedList::deleteAllNodes(Node* ptr)
 {
-    if (ptr->getNext())
+    if (ptr->getNext() && (ptr->getNext())->getNext())
     {
-        ptr->setNext(ptr->getNext());
+        ptr= ptr->getNext();
         deleteAllNodes(ptr);
-        ptr->setNext(nullptr);
         delete ptr;
+        //ptr = nullptr;
     }
     else
     {
         delete ptr;
+        //ptr = nullptr;
+    }
+}
+*/
+/*
+void *LinkedList::operator new(size_t size)
+{
+    void* p = malloc(size);
+    return p;
+}
+
+
+void LinkedList::operator delete(void* p)
+{
+    free(p);
+}
+*/
+
+Node* LinkedList::currentNode(int pos)
+{
+    Node* ptr = head;
+    while (ptr != nullptr && ptr->getPos() != pos)
+    {
+        ptr = ptr->getNext();
+    }
+    return ptr;
+}
+
+
+void LinkedList::clearTopZero()
+{
+    Node* temp = currentNode(numNodes - 1);
+    while (temp != nullptr && temp->getNum() == 0)
+    {
+        temp = currentNode(numNodes - 2);
+        if (temp != nullptr)
+        {
+            delete temp->getNext();
+            temp->setNext(nullptr);
+            numNodes--;
+        }
     }
 }
 
 
+void LinkedList::freeSpace()
+{
+    while (head)
+    {
+        Node* temp = head->getNext();
+        delete head;
+        head = temp;
+    }
+}
+
 LinkedList::~LinkedList()
 {
-    emptyList();
+    freeSpace();
 }
 
