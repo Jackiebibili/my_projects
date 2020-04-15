@@ -13,8 +13,14 @@ private:
 public:
 	LinkedList();
 	LinkedList(Node* ptr);
+	LinkedList(int num, int pos)
+	{
+		head = new Node(pos, num);
+		modifyNumberDigits();
+		modifyNumberNodes();
+	}
 	//copy constructor
-	LinkedList(LinkedList&);
+	LinkedList(const LinkedList&);
 	void initializeResult(Node* head1, int totalNode);
 	LinkedList operator=(const LinkedList& right);
 	bool operator>=(const LinkedList& right) const;
@@ -22,20 +28,23 @@ public:
 	int getListValue(int pos) const;
 	int getNodeNum() const;
 	int getNumDigits() const;
+	int getUpmostNodeDigitNum() const;
 	Node* getHead() const;
 	void setValue(int pos, int val);
 	void initializeResult(int totalNode);
-	//void incrementValue(int pos, int val);
+	void incrementValue(int pos, int val);
 	void modifyNumberDigits();
 	void modifyNumberNodes();
 	int NodeNum();
 	int numberDigits();
-	//void emptyList();
-	//void deleteAllNodes(Node* ptr);
 	Node* currentNode(int pos);
 	void clearTopZero();
+	//void emptyList();
+	//void deleteAllNodes(Node* ptr);
 	//void* operator new(size_t size);
 	//void operator delete(void* p);
+	friend void showList(const LinkedList &start);
+	friend void showList(const LinkedList &start, int point);
 	void freeSpace();
 	~LinkedList();
 

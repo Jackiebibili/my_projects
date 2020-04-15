@@ -5,7 +5,7 @@
 #include "Node.h"
 #include "LinkedList.h"
 #include "Addition.h"
-using namespace std;
+//using namespace std;
 
 class Multiply
 {

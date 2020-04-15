@@ -17,6 +17,15 @@ Node::Node(int pos, int n)
 	num = n;
 }
 
+Node::Node(const Node& right)
+{
+	num = right.num;
+	loc = right.loc;
+	next = nullptr;
+	//avoid address assignment
+}
+
+
 int Node::getNum()const
 {
 	return num;

@@ -6,13 +6,16 @@
 #include "Addition.h"
 #include "Subtraction.h"
 #include "Multiplication.h"
+#include "Division.h"
 using namespace std;
 
 int modifyNodeNums(int num);
 void cutString(string& num1, string& num2, LinkedList &head1, LinkedList &head2);
 void input(string& num1, string& num2);
 void displayList(Node* head);                       //furthest digit first, display without a decimal point
-void displayEveryDigit(Node* head, int intsize);    //lowest digit first, display with a decimal point
+void displayList(Node* head, int intsize);          //lowest digit first, display with a decimal point
+void showList(const LinkedList& start);
+void showList(const LinkedList& start, int point);
 void menu();
 bool digit(string number);
 int isNegative(LinkedList head1, LinkedList head2);
@@ -23,7 +26,7 @@ int main()
     string choice;
     LinkedList obj1, obj2, result;
     string num1, num2;
-
+    int size = 0;
 
     do
     {
@@ -156,19 +159,25 @@ int main()
             }
             //END MULTIPLICATION
             break;
-            /*
         case 4: //division
-            size = division(head1, head2, head3, m, n, totalNode);
+            Divide example(obj1, obj2);
+            example.division();
+            result = example.getResult();
+            size = example.getDecimalPointPos();
             break;
-            */
         }
 
         if (choice != "4")
         {
-            //display the result
-            displayList(result.getHead());
+            //display the result recursively
+            showList(result);
             cout << endl;
-
+        }
+        else
+        {
+            //display the division result only, iteratively
+            showList(result, size);
+            cout << endl;
         }
 
     } while (choice >= "1" && choice <= "4");
@@ -176,6 +185,19 @@ int main()
     return 0;
 
     //displayList((example.getResult()).getHead());
+}
+
+void showList(const LinkedList &start)
+{
+    Node* ptr = start.head;
+    displayList(ptr);
+}
+
+
+void showList(const LinkedList &start, int point)
+{
+    Node* ptr = start.head;
+    displayList(ptr, point);
 }
 
 
@@ -199,7 +221,7 @@ void displayList(Node* head)
 }
 
 
-void displayEveryDigit(Node* head, int intsize)
+void displayList(Node* head, int intsize)
 {
     int i = 0;
     while (head != nullptr)

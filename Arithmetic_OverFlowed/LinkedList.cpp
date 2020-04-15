@@ -19,9 +19,10 @@ LinkedList::LinkedList(Node* ptr)
 }
 
 
-LinkedList::LinkedList(LinkedList& h)
+LinkedList::LinkedList(const LinkedList& h)
 {
-    initializeResult(h.getHead(), h.getNodeNum());
+    
+    initializeResult(h.head, h.numNodes);
     numNodes = NodeNum();
     numDigits = numberDigits();
 }
@@ -50,9 +51,9 @@ LinkedList LinkedList::operator=(const LinkedList& right)
         //delete all pre-existing nodes
         freeSpace();
         head = nullptr;
-        numDigits = right.getNumDigits();
-        numNodes = right.getNodeNum();
         initializeResult(right.getHead(), right.getNodeNum());
+        numNodes = right.getNodeNum();
+        numDigits = right.getNumDigits();
     }
     return *this;
 }
@@ -97,7 +98,6 @@ void LinkedList::addNode(int num, int pos)
     if (head == nullptr)
     {
         head = A;
-        return;
     }
     else
     {
@@ -155,7 +155,8 @@ void LinkedList::initializeResult(int totalNode)
     }
 }
 
-/*
+//increment by one-digit long value, already have 0 in place
+//it's not recursively carrying
 void LinkedList::incrementValue(int pos, int val)
 {
     Node* ptr = head;
@@ -163,9 +164,10 @@ void LinkedList::incrementValue(int pos, int val)
     {
         ptr = ptr->getNext();
     }
-    ptr->setNum(ptr->getNum() + val);
+    if(ptr)
+        ptr->setNum(ptr->getNum() + val);
 }
-*/
+
 
 void LinkedList::modifyNumberNodes()
 {
@@ -192,6 +194,27 @@ int LinkedList::getNumDigits() const
 }
 
 
+//this function obtains the number of upmost digits (either 3, 2, or 1)
+int LinkedList::getUpmostNodeDigitNum() const
+{
+    if (getListValue(numNodes - 1) < 10)
+    {
+        return 1;
+    }
+    else if (getListValue(numNodes - 1) < 100)
+    {
+        return 2;
+    }
+    else
+    {
+        return 3;
+    }
+}
+
+
+
+
+
 int LinkedList::getNodeNum() const
 {
     return numNodes;
@@ -200,7 +223,7 @@ int LinkedList::getNodeNum() const
 
 void LinkedList::modifyNumberDigits()
 {
-    numDigits =  numberDigits();
+    numDigits = numberDigits();
 }
 
 
@@ -309,6 +332,9 @@ void LinkedList::freeSpace()
         head = temp;
     }
 }
+
+
+
 
 LinkedList::~LinkedList()
 {

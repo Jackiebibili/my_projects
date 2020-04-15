@@ -13,7 +13,7 @@ public:
 	Node();	//default constructor
 	Node(int num);	//overloading constructor
 	Node(int pos, int num);
-
+	Node(const Node& right);
 	int getNum() const;
 	int getPos() const;
 	Node* getNext();
