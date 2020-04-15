@@ -17,6 +17,7 @@ public:
 	LinkedList(LinkedList&);
 	void initializeResult(Node* head1, int totalNode);
 	LinkedList operator=(const LinkedList& right);
+	bool operator>=(const LinkedList& right) const;
 	void addNode(int num, int pos);
 	int getListValue(int pos) const;
 	int getNodeNum() const;

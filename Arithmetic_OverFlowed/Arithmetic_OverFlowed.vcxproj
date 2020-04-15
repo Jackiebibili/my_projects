@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Addition.h" />
+    <ClInclude Include="Division.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Multiplication.h" />
     <ClInclude Include="Node.h" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Addition.cpp" />
+    <ClCompile Include="Division.cpp" />
     <ClCompile Include="LinkedList.cpp" />
     <ClCompile Include="Multiplication.cpp" />
     <ClCompile Include="Node.cpp" />

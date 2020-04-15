@@ -58,6 +58,38 @@ LinkedList LinkedList::operator=(const LinkedList& right)
 }
 
 
+bool LinkedList::operator>=(const LinkedList& right) const
+{
+    if (numNodes > right.numNodes)
+    {
+        return true;
+    }
+    else if (numNodes < right.numNodes)
+    {
+        return false;
+    }
+    else
+    {
+        //if they are equal
+        int i;
+        //check every node(3 digits)
+        for (i = numNodes - 1; i >= 0; i--)
+        {
+            if (this->getListValue(i) > right.getListValue(i))
+            {
+                return true;
+            }
+            else if (this->getListValue(i) < right.getListValue(i))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+
+
 void LinkedList::addNode(int num, int pos)
 {
     Node* A = new Node(pos, num), * ptr = head;
@@ -115,6 +147,8 @@ void LinkedList::setValue(int pos, int val)
 void LinkedList::initializeResult(int totalNode)
 {
     int i;
+    freeSpace();
+    head = nullptr;
     for (i = 0; i < totalNode; i++)
     {
         addNode(0, i);

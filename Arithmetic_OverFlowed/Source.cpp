@@ -11,7 +11,8 @@ using namespace std;
 int modifyNodeNums(int num);
 void cutString(string& num1, string& num2, LinkedList &head1, LinkedList &head2);
 void input(string& num1, string& num2);
-void displayList(Node* head);
+void displayList(Node* head);                       //furthest digit first, display without a decimal point
+void displayEveryDigit(Node* head, int intsize);    //lowest digit first, display with a decimal point
 void menu();
 bool digit(string number);
 int isNegative(LinkedList head1, LinkedList head2);
@@ -194,6 +195,20 @@ void displayList(Node* head)
     {
         if (head->getNum() != 0)
             cout << head->getNum();
+    }
+}
+
+
+void displayEveryDigit(Node* head, int intsize)
+{
+    int i = 0;
+    while (head != nullptr)
+    {
+        if (i == intsize)
+            cout << ".";
+        cout << head->getNum();
+        head = head->getNext();
+        i++;
     }
 }
 
