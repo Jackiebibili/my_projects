@@ -16,6 +16,14 @@ void Add::addition()
 }
 
 
+Add::Add(Add& obj)
+{
+    head1 = obj.head1;
+    head2 = obj.head2;
+    head3 = obj.head3;
+}
+
+
 int Add::nodeNumAddition(int m, int n)
 {
     if (m > n)
@@ -53,5 +61,10 @@ void Add::sequentialFlow(const int val, int pos)
     {
         head3.setValue(pos, sum);
     }
+}
+
+void Add::plus(const int val, int pos)
+{
+    sequentialFlow(val, pos);
 }
 

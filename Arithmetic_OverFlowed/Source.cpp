@@ -5,6 +5,7 @@
 #include "LinkedList.h"
 #include "Addition.h"
 #include "Subtraction.h"
+#include "Multiplication.h"
 using namespace std;
 
 int modifyNodeNums(int num);
@@ -119,36 +120,42 @@ int main()
             }
             //END SUBTRACTION
             break;
-            /*
         case 3: //*
             if (flag == 2)      //==> NUM1 * NUM2
             {
-                multiplication(head1, head2, head3, m, n, totalNode);
+                Multiply example(obj1, obj2);
+                example.multiplication();
+                result = example.getResult();
             }
             else if (flag == 1) //==> - (NUM1 * NUM2)
             {
-                negateNode(head2, n);
-                multiplication(head1, head2, head3, m, n, totalNode);
+                negateNode(obj2);
+                Multiply example(obj1, obj2);
+                example.multiplication();
+                result = example.getResult();
                 cout << "-";
-                //or
-                //negateNode(head3, totalNode - 1);
+                //or negate the result alone
             }
             else if (flag == -1)//==> - (NUM1 * NUM2)
             {
-                negateNode(head1, m);
-                multiplication(head1, head2, head3, m, n, totalNode);
+                negateNode(obj1);
+                Multiply example(obj1, obj2);
+                example.multiplication();
+                result = example.getResult();
                 cout << "-";
-                //or
-                //negateNode(head3, totalNode - 1);
+                //or negate the result alone
             }
             else                //==> NUM1 * NUM2
             {
-                negateNode(head1, m);
-                negateNode(head2, n);
-                multiplication(head1, head2, head3, m, n, totalNode);
+                negateNode(obj1);
+                negateNode(obj2);
+                Multiply example(obj1, obj2);
+                result = example.getResult();
+                example.multiplication();
             }
             //END MULTIPLICATION
             break;
+            /*
         case 4: //division
             size = division(head1, head2, head3, m, n, totalNode);
             break;
