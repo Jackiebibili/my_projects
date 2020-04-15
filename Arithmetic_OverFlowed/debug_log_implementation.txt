@@ -1,0 +1,1 @@
+clear the numCompare function in subtraction class and make a relation operator overloading (either >= or <) 
