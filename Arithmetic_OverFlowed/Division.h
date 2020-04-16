@@ -37,7 +37,7 @@ public:
 			k = sup;
 		}
 	}
-	LinkedList getResult()
+	LinkedList& getResult()
 	{
 		return head3;
 	}

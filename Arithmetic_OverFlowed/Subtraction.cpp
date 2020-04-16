@@ -11,8 +11,9 @@ void Subtract::subtraction()
     cout << "Performing subtraction\n";
     cout << "The result is: \t\t";
     int totalNode = nodeNumSub(m, n);
-    if (!numCompare())
+    if (!(head1 >= head2))
     {
+        //do a swap of head1 and head2
         LinkedList temp(head1);
         head1 = head2;
         head2 = temp;
@@ -22,9 +23,10 @@ void Subtract::subtraction()
     }
     else
     {
+        //a - b >= 0, do normal calculation
         underflowSubtract(n);
     }
-    //a - b >= 0, do normal calculation
+    head3.clearTopZero();
 }
 
 
@@ -63,36 +65,5 @@ int Subtract::nodeNumSub(int m, int n)
     else
     {
         return n;
-    }
-}
-
-
-bool Subtract::numCompare() const
-{
-    if (head1.getNodeNum()> head2.getNodeNum())
-    {
-        return true;
-    }
-    else if (head1.getNodeNum() < head2.getNodeNum())
-    {
-        return false;
-    }
-    else
-    {
-        //if they are equal
-        int i;
-        //check every node(3 digits)
-        for (i = head1.getNodeNum() - 1; i >= 0; i--)
-        {
-            if (head1.getListValue(i) > head2.getListValue(i))
-            {
-                return true;
-            }
-            else if (head1.getListValue(i) < head2.getListValue(i))
-            {
-                return false;
-            }
-        }
-        return true;
     }
 }

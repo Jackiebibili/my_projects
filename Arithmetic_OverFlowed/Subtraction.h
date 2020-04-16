@@ -18,16 +18,14 @@ public:
 		head2 = obj2;
 		head3 = head1;
 	}
-	LinkedList getResult()
+	LinkedList& getResult()
 	{
-		head3.clearTopZero();
 		return head3;
 	}
 	void subtraction();
 	int nodeNumSub(int m, int n);
 	void underflowSubtract(int n);
 	void sequentialUnderflow(const int val, int pos);
-	bool numCompare() const;
 
 };
 

@@ -104,7 +104,7 @@ bool Divide::compareValue(LinkedList head, LinkedList &testHead1, LinkedList &te
     multiUp.multiplication();
     testHead1 = multiLow.getResult();
     testHead2 = multiUp.getResult();
-    if (head >= testHead2 && head >= testHead2)
+    if (head >= testHead2 && head >= testHead1)
     {
         //subtraction(head1, testHead2, r, m, getNodeNum(testHead2), totalNodeR);
         return true;    //have the ceiling value;
@@ -148,7 +148,7 @@ int Divide::getNextDigit(LinkedList head, int pos, int sub)
 //                          m for aug and n for head2
 int Divide::divisionFor(LinkedList aug, int loc, int place)
 {
-    int i, totalNode = 0;
+    int totalNode = 0;
     int ceiling = 0, a = 0;
     int sub, next, offset;
     int first2List2;

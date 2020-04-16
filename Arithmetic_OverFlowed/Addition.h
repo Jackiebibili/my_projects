@@ -35,9 +35,8 @@ public:
 		head3 = head1;
 	}
 	Add(Add& obj);
-	LinkedList getResult()
+	LinkedList& getResult()
 	{
-		head3.clearTopZero();
 		return head3;
 	}
 	int getHead1_NodeNum() const

@@ -13,6 +13,7 @@ void Add::addition()
     int totalNode = nodeNumAddition(m, n);
     head3 = head1;
     overflowAddition(n);
+    head3.clearTopZero();
 }
 
 

@@ -16,6 +16,7 @@ void Multiply::multiplication()
     int totalNode = nodeNumMulti(m, n);
     overflowMulti(m, n);
     head = obj.getResult();
+    head.clearTopZero();
 }
 
 

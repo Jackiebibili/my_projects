@@ -24,7 +24,7 @@ void negateNode(LinkedList &head);
 int main()
 {
     string choice;
-    LinkedList obj1, obj2, result;
+    LinkedList result;
     string num1, num2;
     int size = 0;
 
@@ -46,6 +46,7 @@ int main()
 
         //else, continue the calculation
         input(num1, num2);
+        LinkedList obj1, obj2;
         cutString(num1, num2, obj1, obj2);
 
         //pre-display the context
@@ -184,7 +185,6 @@ int main()
 
     return 0;
 
-    //displayList((example.getResult()).getHead());
 }
 
 void showList(const LinkedList &start)

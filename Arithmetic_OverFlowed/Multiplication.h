@@ -17,9 +17,8 @@ public:
 	Multiply(LinkedList obj1, LinkedList obj2) :
 		obj(obj1, obj2, nodeNumMulti(obj1.getNodeNum(), obj2.getNodeNum()))
 	{ }
-	LinkedList getResult()
+	LinkedList& getResult()
 	{
-		head.clearTopZero();
 		return head;
 	}
 
