@@ -23,6 +23,8 @@ int main()
 	Det matrix(matrix_A, m, n);
 	double det = matrix.getDeterminant();
 	cout << "The determinant of the matrix is " << det << endl;
+
+	system("pause");
 }
 
 
