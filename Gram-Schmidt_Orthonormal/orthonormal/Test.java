@@ -45,6 +45,17 @@ public class Test {
 			System.out.println("");
 		}
 		
+		//least square solution
+		System.out.println("Enter the vector b, separate each element by a space");
+		Double [] vec_b = new Double[vecs];
+
+		for(int i = 0; i < vecs; i++)
+		{
+			vec_b[i] = in.nextDouble();
+		}
+		Vector<Number> b = new Vector<Number>(vec_b, vecs);
+		example.leastSquareSolution(b);
+		example.displayLeastSquareSolution();
 	}
 
 }

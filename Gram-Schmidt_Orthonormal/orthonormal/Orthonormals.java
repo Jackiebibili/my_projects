@@ -6,6 +6,8 @@ public class Orthonormals<T extends Number>
 	private Vector<Number>[] vecMatrix;
 	private Vector<Number>[] orthoMatrix;
 	private Vector<Number>[] decompR;	//matrix R in A = QR
+	private Vector<Number> rhs_b;
+	private Vector<Number> least_sqrt_x;
 	private int numVecs;
 	private int row;
 	public static final int SIZE = 3;
@@ -18,6 +20,8 @@ public class Orthonormals<T extends Number>
 		numVecs = SIZE;
 		row = Vector.SIZE;
 		initMatrix();
+		rhs_b = new Vector<Number>(numVecs);
+		least_sqrt_x = new Vector<Number>(numVecs);
 	}
 	public Orthonormals(Vector<? extends T>[] arr, int num)
 	throws CloneNotSupportedException
@@ -33,6 +37,9 @@ public class Orthonormals<T extends Number>
 			vecMatrix[i] = (Vector<Number>) arr[i].clone();
 		}
 		initMatrix();
+		rhs_b = new Vector<Number>(numVecs);
+		least_sqrt_x = new Vector<Number>(numVecs);
+
 	}
 	private void initMatrix()
 	{
@@ -102,9 +109,38 @@ public class Orthonormals<T extends Number>
 		}
 	}
 	
+	public void leastSquareSolution(Vector<Number> vec) throws Exception
+	{
+		transposeMatrixVector(vec);
+		backSubstitute();
+	}
+	
+	private void transposeMatrixVector(Vector<Number> b) throws Exception
+	{
+		for(int i = 0; i < numVecs; i++)
+		{
+			rhs_b.vector[i] = orthoMatrix[i].innerProduct(b);
+		}
+	}
+	
+	private void backSubstitute()
+	{
+		for(int i = row - 1; i >= 0; i--)
+		{
+			double rhs_elem = rhs_b.vector[i].doubleValue();
+			for(int j = numVecs - 1; j > i; j--)
+			{
+				//calculate the offset to the rhs
+				rhs_elem -= least_sqrt_x.vector[j].doubleValue() * decompR[j].vector[i].doubleValue();
+			}
+			least_sqrt_x.vector[i] = rhs_elem / decompR[i].vector[i].doubleValue();
+		}
+	}
+	
+	
 	public void displayDecomposition()
 	{
-		System.out.println("The matrix decompositino A = QR is:");
+		System.out.println("The matrix decomposition A = QR is:");
 		for(int i = 0; i < row; i++)
 		{
 			for(int j = 0; j < numVecs; j++)
@@ -160,9 +196,18 @@ public class Orthonormals<T extends Number>
 		{
 			for(int j = 0; j < numVecs; j++)
 			{
-				System.out.printf("%3.3f  ", orthoMatrix[j].vector[i]);
+				System.out.printf("%7.2f  ", orthoMatrix[j].vector[i]);
 			}
 			System.out.println("");
+		}
+	}
+	
+	public void displayLeastSquareSolution()
+	{
+		System.out.println("\nThe least square solution vector x is:\n(i.e. solve Rx = trans(Q)b <== trans(A)Ax = trans(A)b)");
+		for(int i = 0; i < numVecs; i++)
+		{
+			System.out.printf("|%7.2f|\n", least_sqrt_x.vector[i]);
 		}
 	}
 }
