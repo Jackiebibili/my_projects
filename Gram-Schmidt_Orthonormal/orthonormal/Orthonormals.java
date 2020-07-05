@@ -20,7 +20,7 @@ public class Orthonormals<T extends Number>
 		numVecs = SIZE;
 		row = Vector.SIZE;
 		initMatrix();
-		rhs_b = new Vector<Number>(numVecs);
+		rhs_b = new Vector<Number>(numVecs);	
 		least_sqrt_x = new Vector<Number>(numVecs);
 	}
 	public Orthonormals(Vector<? extends T>[] arr, int num)
@@ -44,13 +44,13 @@ public class Orthonormals<T extends Number>
 	private void initMatrix()
 	{
 		orthoMatrix = new Vector[numVecs];
-		decompR = new Vector[numVecs];
+		decompR = new Vector[numVecs];	//# indep. vectors = #col in Q = #rows in R(which is a square matrix)
 		for(int i = 0; i < numVecs; i++)
 		{
 			//init each vector in the 2d array
 			orthoMatrix[i] = new Vector<Number>(row);
 			orthoMatrix[i].initVector();
-			decompR[i] = new Vector<Number>(row);
+			decompR[i] = new Vector<Number>(numVecs);
 			decompR[i].initVector();
 		}
 	}
@@ -125,7 +125,7 @@ public class Orthonormals<T extends Number>
 	
 	private void backSubstitute()
 	{
-		for(int i = row - 1; i >= 0; i--)
+		for(int i = numVecs - 1; i >= 0; i--)
 		{
 			double rhs_elem = rhs_b.vector[i].doubleValue();
 			for(int j = numVecs - 1; j > i; j--)
@@ -157,11 +157,16 @@ public class Orthonormals<T extends Number>
 				System.out.printf("%7.2f ", orthoMatrix[j].vector[i]);
 			}
 			System.out.print(" | ");
-
-			for(int j = 0; j < numVecs; j++)
+			
+			//if Q is not a suqre matrix --least square situation: m >> n
+			if(i < numVecs)
 			{
-				System.out.printf("%7.2f ", decompR[j].vector[i]);
+				for(int j = 0; j < numVecs; j++)
+				{
+					System.out.printf("%7.2f ", decompR[j].vector[i]);
+				}
 			}
+			
 			if(i < row-1)
 			{
 				//implement visual of the block of the matrix

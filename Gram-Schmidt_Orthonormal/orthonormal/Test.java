@@ -30,30 +30,22 @@ public class Test {
 		//create an object of type Orthonormals<T>
 		Orthonormals<Double> example = new Orthonormals<>(block, vecs);
 		
-		//if m = n => Q is a square matrix
-		if(dim == vecs)
-		{
-			example.orthoDecompose();
-			example.displayDecomposition();
-			System.out.println("");
-
-		}
-		else
-		{
-			example.calcOrthonormal();
-			example.displayOrthonormal();
-			System.out.println("");
-		}
+		//calculate the decomposition A = QR
+		example.orthoDecompose();
+		System.out.println("");
+		example.displayDecomposition();
+		System.out.println("");
+		
 		
 		//least square solution
-		System.out.println("Enter the vector b, separate each element by a space");
-		Double [] vec_b = new Double[vecs];
+		System.out.println("\nEnter the vector b, separate each element by a space");
+		Double [] vec_b = new Double[dim];	//dim(b) = dim(q)
 
-		for(int i = 0; i < vecs; i++)
+		for(int i = 0; i < dim; i++)	////vec. b dimension = dimension of each q (orthogonal vector)
 		{
 			vec_b[i] = in.nextDouble();
 		}
-		Vector<Number> b = new Vector<Number>(vec_b, vecs);
+		Vector<Number> b = new Vector<Number>(vec_b, dim);
 		example.leastSquareSolution(b);
 		example.displayLeastSquareSolution();
 	}
